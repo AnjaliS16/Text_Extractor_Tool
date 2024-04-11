@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Extraction Tool</title>
+<style>
+  body {
+    background-image: url('https://i.pinimg.com/originals/e5/d7/42/e5d7426b911e35aa1e517c52d56b984b.jpg');
+            background-size: cover; 
+            background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 50px;
+  }
+
+  .section {
+    width: 80%;
+    
+    max-width: 600px;
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: plum;
+    border-radius: 10px;
+    box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  .section h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .section p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.788);
+    line-height: 1.5;
+    text-align: justify;
+    margin-bottom: 20px;
+  }
+
+  #imagePreview {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  #fileInput {
+    display: none;
+  }
+
+  #uploadBtn,
+  #extractBtn,
+  #downloadBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: rgb(82, 2, 82);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background-color 0.3s ease;
+  }
+
+  #uploadBtn:hover,
+  #extractBtn:hover,
+  #downloadBtn:hover {
+    background-color: #994994e5;
+  }
+
+  #textarea {
+    background-color: rgba(243, 210, 243, 0.925);
+    width: 100%;
+    height: 200px;
+    resize: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    border: 1px solid #ccc;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+    <form action="/extracttextfromimage" method="post"  enctype="multipart/form-data">
+  <div class="section">
+    <h3>1. Upload Image</h3>
+    <p>Click on the button below to select an image file from your device. Once selected, the image preview will be displayed.</p>
+    <input type="file" name="file" accept="image/*" id="fileInput" >
+    <label for="fileInput" id="uploadBtn">Upload Image File</label>
+    <br>
+    <img src="" alt="Uploaded Image" id="imagePreview" style="display: none;">
+  </div>
+
+  <div class="section">
+    <h3>2. Extract Text</h3>
+    <p>After uploading the image, click on the button below to extract text from the uploaded image. The extracted text will appear in the textarea below.</p>
+    <button id="extractBtn">Extract Text From Image</button>
+  </div>
+</form>
+  <div class="section">
+    <h3>3. Download Text</h3>
+    <p>Once the text is extracted, you can download it by clicking on the button below. The extracted text will be downloaded as a text file.</p>
+    <button id="downloadBtn">Download Text</button>
+  </div>
+
+  <textarea id="textarea" placeholder="Extracted Text Will Appear Here" readonly></textarea>
+</div>
+<script>
+    
+
+
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('imagePreview').src = e.target.result;
+      document.getElementById('imagePreview').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+  
+  document.getElementById('extractBtn').addEventListener('click', function() {
+    // Simulate text extraction process
+    const extractedText = "This is a sample extracted text.";
+    document.getElementById('textarea').value = extractedText;
+  });
+  
+  document.getElementById('downloadBtn').addEventListener('click', function() {
+    const textToDownload = document.getElementById('textarea').value;
+    const blob = new Blob([textToDownload], { type: 'text/plain' });
+    const anchor = document.createElement('a');
+    anchor.href = URL.createObjectURL(blob);
+    anchor.download = 'extracted_text.txt';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  });
+</script>
+
+
+
+</body>
+</html>
